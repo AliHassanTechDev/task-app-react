@@ -1,8 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
-  const [tasks, setTasks] = useState([])
+  // Pehle localStorage se tasks load karein, warna khali list
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('tasks')
+    return saved ? JSON.parse(saved) : []
+  })
   const [text, setText] = useState('')
+
+  // Jab bhi tasks badlein, unhe localStorage mein save karein
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
 
   function addTask() {
     if (text.trim() === '') return
